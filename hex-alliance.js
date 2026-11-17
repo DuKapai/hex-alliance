@@ -724,6 +724,9 @@
                 autoplay: 1,
                 controls: 0,
                 disablekb: 1,
+                fs: 0,
+                iv_load_policy: 3,
+                rel: 0,
                 loop: 1,
                 playlist: "G-uZ68ynWfE",
                 playsinline: 1,
@@ -731,6 +734,12 @@
             },
             events: {
                 onReady: function(event) {
+                    var frame = event.target.getIframe && event.target.getIframe();
+                    if (frame) {
+                        frame.removeAttribute("allowfullscreen");
+                        frame.setAttribute("allow", "autoplay; encrypted-media");
+                        frame.setAttribute("playsinline", "");
+                    }
                     event.target.setVolume(effectiveMusicVolume());
                     if (musicEnabled && userStarted) {
                         event.target.unMute();

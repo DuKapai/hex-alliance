@@ -886,10 +886,12 @@ body.music-playing .music-note-three {
 .music-player {
     position: fixed;
     top: 0;
-    left: -220px;
+    left: 0;
     width: 200px;
     height: 200px;
     overflow: hidden;
+    opacity: .01;
+    z-index: -1;
     pointer-events: none;
 }
 
