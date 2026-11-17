@@ -578,11 +578,15 @@
     var duckTimer = null;
 
     function guideVolume() {
-        return Math.min(1, 0.35 + 0.65 * parseInt(musicVolume.value, 10) / 100);
+        return parseInt(musicVolume.value, 10) / 100;
     }
 
+    /* Loudness-matched: voice file ~ -15 LUFS, music file -14 LUFS trimmed to ~ -19 LUFS (x0.55).
+       Both follow the same slider, so the voice stays ~4 LU above the music and ~10 LU while ducked. */
+    var MUSIC_TRIM = 0.55;
+
     function effectiveMusicVolume() {
-        return Math.round(parseInt(musicVolume.value, 10) * duckFactor);
+        return Math.round(parseInt(musicVolume.value, 10) * duckFactor * MUSIC_TRIM);
     }
 
     function duckMusicTo(target) {
@@ -803,7 +807,7 @@
     guideResume.addEventListener("click", playGuide);
     guideAudio.addEventListener("playing", function() {
         setGuideState("playing", "Đang giới thiệu HAL...");
-        duckMusicTo(0.45);
+        duckMusicTo(0.5);
     });
     guideAudio.addEventListener("pause", function() {
         duckMusicTo(1);
