@@ -631,7 +631,7 @@
         updateMusicVisual();
 
         if (!musicPlayer) {
-            musicStatus.textContent = enabled ? "Đang kết nối YouTube..." : "Âm thanh đã tắt";
+            musicStatus.textContent = enabled ? "Đang tải nhạc nền..." : "Âm thanh đã tắt";
             return;
         }
 
@@ -714,83 +714,62 @@
     }
 
     function initializeMusicPlayer() {
-        if (!window.YT || !window.YT.Player) return;
-
-        musicPlayer = new window.YT.Player("musicPlayer", {
-            width: "200",
-            height: "200",
-            videoId: "G-uZ68ynWfE",
-            playerVars: {
-                autoplay: 1,
-                controls: 0,
-                disablekb: 1,
-                fs: 0,
-                iv_load_policy: 3,
-                rel: 0,
-                loop: 1,
-                playlist: "G-uZ68ynWfE",
-                playsinline: 1,
-                start: 3
+        var bgAudio = document.getElementById("bgMusic");
+        bgAudio.loop = true;
+        bgAudio.preload = "auto";
+        musicPlayer = {
+            setVolume: function(v) {
+                bgAudio.volume = Math.max(0, Math.min(1, v / 100));
             },
-            events: {
-                onReady: function(event) {
-                    var frame = event.target.getIframe && event.target.getIframe();
-                    if (frame) {
-                        frame.removeAttribute("allowfullscreen");
-                        frame.setAttribute("allow", "autoplay; encrypted-media");
-                        frame.setAttribute("playsinline", "");
-                    }
-                    event.target.setVolume(effectiveMusicVolume());
-                    if (musicEnabled && userStarted) {
-                        event.target.unMute();
-                        event.target.playVideo();
-                    } else if (musicEnabled) {
-                        event.target.mute();
-                        event.target.playVideo();
-                        awaitFirstGesture();
-                    } else {
-                        event.target.mute();
-                    }
-                },
-                onAutoplayBlocked: function() {
-                    musicStatus.textContent = "Chạm vào trang để bật nhạc nền.";
+            mute: function() {
+                bgAudio.muted = true;
+            },
+            unMute: function() {
+                bgAudio.muted = false;
+            },
+            isMuted: function() {
+                return bgAudio.muted;
+            },
+            playVideo: function() {
+                var started = bgAudio.play();
+                if (started && started.catch) started.catch(function() {
                     awaitFirstGesture();
-                },
-                onStateChange: function(event) {
-                    musicIsPlaying = event.data === 1;
-                    updateMusicVisual();
-                    if (musicEnabled && (event.data === -1 || event.data === 5)) event.target.playVideo();
-                    if (musicIsPlaying && musicEnabled) musicStatus.textContent = "Nhạc nền đang phát";
-                },
-                onError: function(event) {
-                    musicIsPlaying = false;
-                    updateMusicVisual();
-                    musicStatus.textContent = "Không phát được nhạc YouTube (mã lỗi " + event.data + ").";
-                    musicToggle.disabled = true;
-                }
+                });
+            },
+            pauseVideo: function() {
+                bgAudio.pause();
             }
+        };
+        bgAudio.addEventListener("playing", function() {
+            musicIsPlaying = true;
+            updateMusicVisual();
+            if (musicEnabled) musicStatus.textContent = "Nhạc nền đang phát";
         });
-    }
-
-    if (window.YT && window.YT.Player) {
-        initializeMusicPlayer();
-    } else {
-        var previousYouTubeReady = window.onYouTubeIframeAPIReady;
-        window.onYouTubeIframeAPIReady = function() {
-            if (typeof previousYouTubeReady === "function") previousYouTubeReady();
-            initializeMusicPlayer();
-        };
-
-        var youtubeApi = document.createElement("script");
-        youtubeApi.src = "https://www.youtube.com/iframe_api";
-        youtubeApi.async = true;
-        youtubeApi.onerror = function() {
-            musicStatus.textContent = "Không tải được trình phát YouTube.";
+        bgAudio.addEventListener("pause", function() {
+            musicIsPlaying = false;
+            updateMusicVisual();
+        });
+        bgAudio.addEventListener("error", function() {
+            musicIsPlaying = false;
+            updateMusicVisual();
+            musicStatus.textContent = "Chưa có file audio/music.mp3.";
             musicToggle.disabled = true;
-        };
-        document.head.appendChild(youtubeApi);
+        });
+
+        musicPlayer.setVolume(effectiveMusicVolume());
+        if (musicEnabled && userStarted) {
+            musicPlayer.unMute();
+            musicPlayer.playVideo();
+        } else if (musicEnabled) {
+            musicPlayer.mute();
+            musicPlayer.playVideo();
+            awaitFirstGesture();
+        } else {
+            musicPlayer.mute();
+        }
     }
 
+    initializeMusicPlayer();
     var guideStart = document.getElementById("guideStart");
     var guidePause = document.getElementById("guidePause");
     var guideResume = document.getElementById("guideResume");
