@@ -41,6 +41,8 @@
     function closeModal() {
         modal.hidden = true;
         input.value = "";
+        input.type = "password";
+        document.getElementById("pwEye").classList.remove("is-on");
         err.hidden = true;
         pending = null;
     }
@@ -75,6 +77,15 @@
     });
 
     document.getElementById("pwCancel").addEventListener("click", closeModal);
+    var eye = document.getElementById("pwEye");
+    eye.addEventListener("click", function() {
+        var show = input.type === "password";
+        input.type = show ? "text" : "password";
+        eye.setAttribute("aria-pressed", String(show));
+        eye.setAttribute("aria-label", show ? "Ẩn mật khẩu" : "Hiện mật khẩu");
+        eye.classList.toggle("is-on", show);
+        input.focus();
+    });
     modal.addEventListener("click", function(event) { if (event.target === modal) closeModal(); });
     document.addEventListener("keydown", function(event) {
         if (event.key === "Escape" && !modal.hidden) closeModal();

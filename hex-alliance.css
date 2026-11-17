@@ -1634,6 +1634,12 @@ body.lock-entry { overflow: hidden }
 .pw-box p { margin: 0; font-size: .85rem; opacity: .8 }
 .pw-box input { height: 44px; border-radius: 8px; border: 1px solid rgba(255,196,61,.4); background: #05060a; color: inherit; padding: 0 .8rem; font-size: 1rem }
 .pw-box .pw-err { color: #ff7a7a; opacity: 1 }
+.pw-field { position: relative }
+.pw-field input { width: 100%; box-sizing: border-box; padding-right: 2.8rem }
+.pw-eye { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; display: grid; place-items: center; background: transparent; border: 0; color: var(--accent, #ffc43d); cursor: pointer; border-radius: 8px; opacity: .8 }
+.pw-eye:hover { opacity: 1 }
+.pw-eye .pw-slash { opacity: 1 }
+.pw-eye.is-on .pw-slash { opacity: 0 }
 .pw-actions { display: flex; gap: .6rem; justify-content: flex-end }
 .pw-actions button { min-height: 40px; padding: 0 1.1rem; border-radius: 8px; border: 1px solid rgba(255,196,61,.5); background: transparent; color: var(--accent, #ffc43d); font: inherit; cursor: pointer }
 .pw-actions button[type=submit] { background: var(--accent, #ffc43d); color: #111 }

@@ -15,7 +15,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@200;300;400;500&family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;1,6..72,300&display=swap"
               rel="stylesheet">
-        <link rel="stylesheet" href="hex-alliance.css?v=5">
+        <link rel="stylesheet" href="hex-alliance.css?v=6">
     </head>
     <body>
         <header class="bar">
@@ -401,9 +401,14 @@
         </div>
                 <div class="pw-modal" id="pwModal" hidden>
             <form class="pw-box" id="pwForm" autocomplete="off">
-                <h3>Khu vực nội bộ</h3>
+                <h3>Khu vực của thành viên nội bộ</h3>
                 <p>Nhập mật khẩu để mở liên kết.</p>
-                <input type="password" id="pwInput" placeholder="Mật khẩu" required>
+                <div class="pw-field">
+                    <input type="password" id="pwInput" placeholder="Mật khẩu" required>
+                    <button type="button" class="pw-eye" id="pwEye" aria-label="Hiện mật khẩu" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="pw-slash" d="M4 4l16 16"/></svg>
+                    </button>
+                </div>
                 <p class="pw-err" id="pwErr" hidden>Sai mật khẩu, thử lại.</p>
                 <div class="pw-actions">
                     <button type="button" id="pwCancel">Hủy</button>
@@ -412,6 +417,6 @@
             </form>
         </div>
         <script src="hex-alliance.js?v=7"></script>
-        <script src="locked-links.js"></script>
+        <script src="locked-links.js?v=2"></script>
     </body>
 </html>
