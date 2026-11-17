@@ -6,7 +6,8 @@
     var form = document.getElementById("pwForm");
     var input = document.getElementById("pwInput");
     var err = document.getElementById("pwErr");
-    if (!box || !modal || !window.crypto || !crypto.subtle) return;
+    if (!box || !modal) return;
+    var canCrypto = !!(window.crypto && crypto.subtle);
 
     var pending = null;
     var cache = {};
@@ -48,6 +49,10 @@
         var link = event.target.closest("[data-lock]");
         if (!link) return;
         event.preventDefault();
+        if (!canCrypto) {
+            alert("Trình duyệt cần mở trang bằng HTTPS để nhập mật khẩu. Hãy mở bản trang chính thức.");
+            return;
+        }
         var name = link.dataset.lock;
         if (cache[name]) { openUrl(cache[name]); return; }
         pending = name;

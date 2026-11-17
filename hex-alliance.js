@@ -754,7 +754,12 @@
 
     function setMediaVolume(el, v) {
         v = Math.max(0, Math.min(1, v));
-        if (!volumeLocked) { el.volume = v; return; }
+        if (!volumeLocked && !el._gain) {
+            el.volume = v;
+            /* some mobile/in-app browsers accept the assignment but keep the old value */
+            if (Math.abs(el.volume - v) < 0.01) return;
+            volumeLocked = true;
+        }
         var Ctx = window.AudioContext || window.webkitAudioContext;
         if (!Ctx) return;
         if (!audioCtx) audioCtx = new Ctx();
@@ -762,6 +767,7 @@
             el._gain = audioCtx.createGain();
             audioCtx.createMediaElementSource(el).connect(el._gain);
             el._gain.connect(audioCtx.destination);
+            el.volume = 1;
         }
         el._gain.gain.value = v;
         resumeAudioCtx();
