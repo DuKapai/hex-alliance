@@ -723,6 +723,38 @@ input[type=range]:focus-visible {
     border-radius: 4px
 }
 
+.vol-row {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+}
+
+.vol-btn {
+    flex: none;
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 196, 61, .4);
+    background: var(--sunk);
+    color: var(--accent);
+    font: 700 1rem/1 inherit;
+    cursor: pointer;
+    padding: 0;
+    transition: background .15s, transform .15s;
+}
+
+.vol-btn:hover { background: rgba(255, 196, 61, .16) }
+.vol-btn:active { transform: scale(.92) }
+.vol-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.vol-row input[type=range] { flex: 1; min-width: 0 }
+.vol-x, .vol-wave { transition: opacity .15s }
+.vol-x { opacity: 0 }
+.vol-row.is-muted .vol-wave { opacity: 0 }
+.vol-row.is-muted .vol-x { opacity: 1 }
+.vol-row.is-low .vol-wave-2 { opacity: 0 }
+
 .panel-out {
     display: flex;
     align-items: center;

@@ -690,7 +690,27 @@
         }
         updateMusicVisual();
         if (guideAudio) guideAudio.volume = guideVolume();
+        var row = musicVolume.parentNode;
+        row.classList.toggle("is-muted", volume === 0);
+        row.classList.toggle("is-low", volume > 0 && volume < 40);
     });
+
+    function stepVolume(delta) {
+        var v = Math.max(0, Math.min(100, parseInt(musicVolume.value, 10) + delta));
+        musicVolume.value = v;
+        musicVolume.dispatchEvent(new Event("input"));
+    }
+    document.getElementById("volDown").addEventListener("click", function() { stepVolume(-10); });
+    document.getElementById("volUp").addEventListener("click", function() { stepVolume(10); });
+    document.getElementById("volMute").addEventListener("click", function() {
+        if (parseInt(musicVolume.value, 10) === 0) {
+            musicVolume.value = lastNonZeroVolume || 70;
+        } else {
+            musicVolume.value = 0;
+        }
+        musicVolume.dispatchEvent(new Event("input"));
+    });
+    musicVolume.dispatchEvent(new Event("input"));
 
     var gestureEvents = ["pointerdown", "keydown", "touchstart", "wheel"];
     var gestureArmed = false;
