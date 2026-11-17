@@ -42,6 +42,8 @@
         modal.hidden = true;
         input.value = "";
         input.type = "password";
+        input.classList.remove("is-invalid");
+        err.classList.add("pw-err");
         document.getElementById("pwEye").classList.remove("is-on");
         err.hidden = true;
         pending = null;
@@ -66,14 +68,31 @@
         event.preventDefault();
         var name = pending;
         if (!name) return;
+        if (!input.value.trim()) {
+            err.textContent = "Vui lòng nhập mật khẩu.";
+            err.hidden = false;
+            input.classList.add("is-invalid");
+            input.focus();
+            return;
+        }
+        err.textContent = "Đang kiểm tra...";
+        err.hidden = false;
+        err.classList.remove("pw-err");
         decrypt(name, input.value.trim().toLowerCase()).then(function(url) {
             cache[name] = url;
             closeModal();
             openUrl(url);
         }).catch(function() {
-            err.hidden = false;
+            err.textContent = "Sai mật khẩu, vui lòng thử lại.";
+            err.classList.add("pw-err");
+            input.classList.add("is-invalid");
             input.select();
         });
+    });
+
+    input.addEventListener("input", function() {
+        err.hidden = true;
+        input.classList.remove("is-invalid");
     });
 
     document.getElementById("pwCancel").addEventListener("click", closeModal);
