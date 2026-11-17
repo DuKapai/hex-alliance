@@ -689,7 +689,7 @@
             }
         }
         updateMusicVisual();
-        if (guideAudio) guideAudio.volume = guideVolume();
+        if (guideAudio) setMediaVolume(guideAudio, guideVolume());
         var row = musicVolume.parentNode;
         row.classList.toggle("is-muted", volume === 0);
         row.classList.toggle("is-low", volume > 0 && volume < 40);
@@ -737,13 +737,43 @@
         });
     }
 
+    /* iOS Safari ignores HTMLMediaElement.volume, so route through a Web Audio gain node there */
+    var volumeLocked = (function() {
+        var probe = new Audio();
+        probe.volume = 0.5;
+        return probe.volume !== 0.5;
+    })();
+    var audioCtx = null;
+
+    function resumeAudioCtx() {
+        if (audioCtx && audioCtx.state !== "running") audioCtx.resume();
+    }
+    ["pointerdown", "touchend", "click", "keydown"].forEach(function(name) {
+        window.addEventListener(name, resumeAudioCtx, true);
+    });
+
+    function setMediaVolume(el, v) {
+        v = Math.max(0, Math.min(1, v));
+        if (!volumeLocked) { el.volume = v; return; }
+        var Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) return;
+        if (!audioCtx) audioCtx = new Ctx();
+        if (!el._gain) {
+            el._gain = audioCtx.createGain();
+            audioCtx.createMediaElementSource(el).connect(el._gain);
+            el._gain.connect(audioCtx.destination);
+        }
+        el._gain.gain.value = v;
+        resumeAudioCtx();
+    }
+
     function initializeMusicPlayer() {
         var bgAudio = document.getElementById("bgMusic");
         bgAudio.loop = true;
         bgAudio.preload = "auto";
         musicPlayer = {
             setVolume: function(v) {
-                bgAudio.volume = Math.max(0, Math.min(1, v / 100));
+                setMediaVolume(bgAudio, v / 100);
             },
             mute: function() {
                 bgAudio.muted = true;
@@ -808,7 +838,7 @@
     }
 
     function playGuide() {
-        guideAudio.volume = guideVolume();
+        setMediaVolume(guideAudio, guideVolume());
         var playback = guideAudio.play();
         if (playback && typeof playback.catch === "function") {
             playback.catch(function() {
