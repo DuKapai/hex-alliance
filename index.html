@@ -223,7 +223,7 @@
                 <div class="announcement-intro">
                 <span class="sheet-tag">Thông báo quân đoàn</span>
                 <h2>HEXϟ ALLIANCE</h2>
-                <p>Nhằm duy trì hoạt động ổn định và phát triển lâu dài, quyền quản lý và điều hành Quân Đoàn hiện được giao cho Hội đồng Ban Quản Trị và các thành viên kỳ cựu.</p>
+                <p>Nhằm duy trì hoạt động ổn định và phát triển lâu dài, quyền quản lý và điều hành Quân Đoàn hiện được giao cho Hội đồng quyền chủ quân đoàn và các thành viên kỳ cựu.</p>
                 <p>Hiện tại, HAL đã có đầy đủ 6 chi nhánh, tương ứng với định hướng HEX = 6, nhằm phát triển thương hiệu, mở rộng cộng đồng và tạo nền tảng góp phần cho định hướng vận hành <span style="color: #ffc43d;">hệ thống game/server</span> riêng của chủ quân đoàn trong tương lai.</p>
                 </div>
                 <div class="announcement-grid">
@@ -249,9 +249,11 @@
                 <div class="announcement-card announcement-resources">
                 <h3>Hướng dẫn và bảng cập nhật thông tin</h3>
                 <p>Kỳ cựu/phụ trách 6 chi nhánh sử dụng bảng để thu thập và cập nhật thông tin thành viên:</p>
-                <div class="announcement-links">
+                <div class="announcement-links" id="lockedLinks"
+                     data-s="nMIRlTgZT6T5+wj7h3ExRQ=="
+                     data-sheet="Y3b2jHniMHhJYd+T.MddK6eWnOai1AIr+5NlzCf/R/kAPVsDdEfZFovGAukCtDvmD3Q7VUhAJxhIFgT59ad5icM/3S43Hb+AmH3IYtW8/C8HoiUdpPBBq3as5cmgOo+Ea7X9S/N1jLWe5Ijtknhs5WE7L+4U12rY9pz0yNvtMg83GoEZOBr0dOkXChjwFV3YO8yr9b/1qdTxKc14FebrqI1TZ2A==">
                     <a href="https://drive.google.com/file/d/1x-Djb2CjJWsrd4KDwo3s8ME1EXwLFZP5/view?usp=sharing" target="_blank" rel="noopener noreferrer">Xem hướng dẫn điền thông tin ↗</a>
-                    <a href="https://docs.google.com/spreadsheets/d/1yBR5l16x778HkSbLOr6T-UKG8bsG0JfV/edit?usp=sharing&amp;ouid=111161259719440090233&amp;rtpof=true&amp;sd=true" target="_blank" rel="noopener noreferrer">Mở bảng cập nhật thành viên ↗</a>
+                    <a href="#" data-lock="sheet">🔒 Mở bảng cập nhật thành viên</a>
                 </div>
                 <p><strong>Quy trình:</strong> Kỳ cựu thu thập thông tin → điền đầy đủ → kiểm tra định kỳ → cập nhật khi có thay đổi.</p>
                 <p>Không tự ý thay đổi cấu trúc hoặc tên cột trong bảng.</p>
@@ -397,6 +399,19 @@
             <span class="music-note music-note-two">♫</span>
             <span class="music-note music-note-three">♪</span>
         </div>
+                <div class="pw-modal" id="pwModal" hidden>
+            <form class="pw-box" id="pwForm" autocomplete="off">
+                <h3>Khu vực nội bộ</h3>
+                <p>Nhập mật khẩu để mở liên kết.</p>
+                <input type="password" id="pwInput" placeholder="Mật khẩu" required>
+                <p class="pw-err" id="pwErr" hidden>Sai mật khẩu, thử lại.</p>
+                <div class="pw-actions">
+                    <button type="button" id="pwCancel">Hủy</button>
+                    <button type="submit">Mở</button>
+                </div>
+            </form>
+        </div>
         <script src="hex-alliance.js?v=5"></script>
+        <script src="locked-links.js"></script>
     </body>
 </html>

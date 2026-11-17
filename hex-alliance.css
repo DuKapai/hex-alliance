@@ -1627,3 +1627,14 @@ body.music-playing .music-note-three {
 }
 body.lock-entry { overflow: hidden }
 
+.pw-modal { position: fixed; inset: 0; z-index: 400; display: grid; place-items: center; background: rgba(0,0,0,.7); padding: 1rem }
+.pw-modal[hidden] { display: none }
+.pw-box { width: min(100%, 340px); background: #111214; border: 1px solid rgba(255,196,61,.4); border-radius: 12px; padding: 1.2rem; display: grid; gap: .7rem }
+.pw-box h3 { margin: 0 }
+.pw-box p { margin: 0; font-size: .85rem; opacity: .8 }
+.pw-box input { height: 44px; border-radius: 8px; border: 1px solid rgba(255,196,61,.4); background: #05060a; color: inherit; padding: 0 .8rem; font-size: 1rem }
+.pw-box .pw-err { color: #ff7a7a; opacity: 1 }
+.pw-actions { display: flex; gap: .6rem; justify-content: flex-end }
+.pw-actions button { min-height: 40px; padding: 0 1.1rem; border-radius: 8px; border: 1px solid rgba(255,196,61,.5); background: transparent; color: var(--accent, #ffc43d); font: inherit; cursor: pointer }
+.pw-actions button[type=submit] { background: var(--accent, #ffc43d); color: #111 }
+
