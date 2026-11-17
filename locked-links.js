@@ -6,6 +6,7 @@
     var form = document.getElementById("pwForm");
     var input = document.getElementById("pwInput");
     var err = document.getElementById("pwErr");
+    var help = document.getElementById("pwHelp");
     if (!box || !modal) return;
     var canCrypto = !!(window.crypto && crypto.subtle);
 
@@ -46,6 +47,7 @@
         err.classList.add("pw-err");
         document.getElementById("pwEye").classList.remove("is-on");
         err.hidden = true;
+        help.hidden = true;
         pending = null;
     }
 
@@ -71,6 +73,7 @@
         if (!input.value.trim()) {
             err.textContent = "Vui lòng nhập mật khẩu.";
             err.hidden = false;
+            help.hidden = false;
             input.classList.add("is-invalid");
             input.focus();
             return;
@@ -85,6 +88,7 @@
         }).catch(function() {
             err.textContent = "Sai mật khẩu, vui lòng thử lại.";
             err.classList.add("pw-err");
+            help.hidden = false;
             input.classList.add("is-invalid");
             input.select();
         });
@@ -92,6 +96,7 @@
 
     input.addEventListener("input", function() {
         err.hidden = true;
+        help.hidden = true;
         input.classList.remove("is-invalid");
     });
 

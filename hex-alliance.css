@@ -1634,6 +1634,10 @@ body.lock-entry { overflow: hidden }
 .pw-box p { margin: 0; font-size: .85rem; opacity: .8 }
 .pw-box input { height: 44px; border-radius: 8px; border: 1px solid rgba(255,196,61,.4); background: #05060a; color: inherit; padding: 0 .8rem; font-size: 1rem }
 .pw-box .pw-err { color: #ff7a7a; opacity: 1 }
+.pw-help { margin: .6rem 0 0; padding: .7rem .85rem; border-left: 2px solid rgba(255,255,255,.35); background: rgba(255,255,255,.06); border-radius: 6px; font-size: .82rem; line-height: 1.5; text-align: left }
+.pw-help[hidden] { display: none }
+.pw-help strong { display: block; margin-bottom: .2rem }
+.pw-help p { margin: 0; opacity: .85 }
 .pw-box input.is-invalid { border-color: #ff7a7a }
 .lock-ic { display: inline-block; vertical-align: -2px; margin-right: .5em }
 .pw-field { position: relative }
