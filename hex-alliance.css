@@ -723,6 +723,8 @@ input[type=range]:focus-visible {
     border-radius: 4px
 }
 
+#musicToggle { display: none }
+
 .vol-row {
     display: flex;
     align-items: center;
