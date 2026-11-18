@@ -744,9 +744,17 @@
         return probe.volume !== 0.5;
     })();
     var audioCtx = null;
+    var preferAudioGain = !!(window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+
+    function reportAudioError(error) {
+        console.error("Audio volume control failed:", error);
+        if (musicStatus) musicStatus.textContent = "Không thể điều chỉnh âm lượng nâng cao trong trình duyệt này.";
+    }
 
     function resumeAudioCtx() {
-        if (audioCtx && audioCtx.state !== "running") audioCtx.resume();
+        if (audioCtx && audioCtx.state !== "running") {
+            audioCtx.resume().catch(reportAudioError);
+        }
     }
     ["pointerdown", "touchend", "click", "keydown"].forEach(function(name) {
         window.addEventListener(name, resumeAudioCtx, true);
@@ -754,23 +762,32 @@
 
     function setMediaVolume(el, v) {
         v = Math.max(0, Math.min(1, v));
-        if (!volumeLocked && !el._gain) {
+        if (!volumeLocked && !preferAudioGain && !el._gain) {
             el.volume = v;
             /* some mobile/in-app browsers accept the assignment but keep the old value */
             if (Math.abs(el.volume - v) < 0.01) return;
             volumeLocked = true;
         }
         var Ctx = window.AudioContext || window.webkitAudioContext;
-        if (!Ctx) return;
-        if (!audioCtx) audioCtx = new Ctx();
-        if (!el._gain) {
-            el._gain = audioCtx.createGain();
-            audioCtx.createMediaElementSource(el).connect(el._gain);
-            el._gain.connect(audioCtx.destination);
-            el.volume = 1;
+        if (!Ctx) {
+            el.volume = v;
+            return;
         }
-        el._gain.gain.value = v;
-        resumeAudioCtx();
+        try {
+            if (!audioCtx) audioCtx = new Ctx();
+            if (!el._source) el._source = audioCtx.createMediaElementSource(el);
+            if (!el._gain) {
+                el._gain = audioCtx.createGain();
+                el._source.connect(el._gain);
+                el._gain.connect(audioCtx.destination);
+            }
+            el.volume = 1;
+            el._gain.gain.value = v;
+            resumeAudioCtx();
+        } catch (error) {
+            if (!el._gain) el.volume = v;
+            reportAudioError(error);
+        }
     }
 
     function initializeMusicPlayer() {
