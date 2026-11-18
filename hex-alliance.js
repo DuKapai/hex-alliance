@@ -10,6 +10,16 @@
     if ("scrollRestoration" in history) history.scrollRestoration = "manual";
     if (location.hash) history.replaceState(null, "", location.pathname + location.search);
     window.scrollTo(0, 0);
+    function preventPinchZoom(event) {
+        if (event.touches && event.touches.length > 1) event.preventDefault();
+    }
+    document.addEventListener("touchstart", preventPinchZoom, { passive: false });
+    document.addEventListener("touchmove", preventPinchZoom, { passive: false });
+    ["gesturestart", "gesturechange"].forEach(function(name) {
+        document.addEventListener(name, function(event) {
+            event.preventDefault();
+        }, { passive: false });
+    });
     window.addEventListener("pageshow", function() {
         window.scrollTo(0, 0);
     });
