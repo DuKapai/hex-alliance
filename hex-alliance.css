@@ -1102,6 +1102,138 @@ body.music-playing .music-note-three {
     color: var(--ink-2);
 }
 
+.branches-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+    margin-top: 1.6rem;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+    padding: 0;
+    width: 100%;
+}
+
+.branch-card {
+    background: rgba(255, 196, 61, .05);
+    border: 1px solid rgba(255, 196, 61, .2);
+    border-left: 3px solid var(--branch-color);
+    border-radius: 4px;
+    padding: 1.2rem;
+    transition: all .3s var(--ease);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.branch-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at top right, rgba(255, 196, 61, .1), transparent);
+    pointer-events: none;
+}
+
+.branch-card:hover {
+    background: rgba(255, 196, 61, .1);
+    border-color: rgba(255, 196, 61, .4);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .3);
+}
+
+.branch-card.copied {
+    animation: copyPulse .6s var(--ease);
+}
+
+@keyframes copyPulse {
+    0% {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, .3);
+    }
+    50% {
+        box-shadow: 0 8px 32px rgba(255, 196, 61, .6);
+    }
+    100% {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, .3);
+    }
+}
+
+.branch-id {
+    display: inline-block;
+    background: var(--branch-color);
+    color: var(--canvas);
+    padding: .35rem .65rem;
+    border-radius: 3px;
+    font-size: .7rem;
+    font-weight: 500;
+    letter-spacing: .05em;
+    white-space: nowrap;
+    align-self: flex-end;
+    margin-bottom: .8rem;
+    position: relative;
+    z-index: 1;
+    transition: all .2s var(--ease);
+}
+
+.branch-card:hover .branch-id {
+    transform: scale(1.05);
+}
+
+.branch-card h3 {
+    color: var(--branch-color);
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0 0 .4rem 0;
+    line-height: 1.3;
+    position: relative;
+    z-index: 1;
+}
+
+.branch-desc {
+    font-size: .8rem;
+    color: var(--branch-color);
+    font-weight: 500;
+    margin: 0 0 .8rem 0;
+    letter-spacing: .02em;
+    position: relative;
+    z-index: 1;
+}
+
+.branch-detail {
+    font-size: .85rem;
+    color: var(--ink-2);
+    line-height: 1.5;
+    margin: 0 0 auto 0;
+    position: relative;
+    z-index: 1;
+}
+
+.copy-hint {
+    font-size: .7rem;
+    color: var(--branch-color);
+    opacity: 0.6;
+    margin-top: .8rem;
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    transition: opacity .2s var(--ease);
+}
+
+.branch-card:hover .copy-hint {
+    opacity: 1;
+}
+
+.branch-detail {
+    font-size: .85rem;
+    color: var(--ink-2);
+    line-height: 1.5;
+    margin: 0;
+}
+
 .facts {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -1350,7 +1482,7 @@ body.music-playing .music-note-three {
 
     .content-grid {
         display: grid;
-        grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
+        grid-template-columns: 1fr;
         align-items: start;
         gap: clamp(20px, 2vw, 32px);
     }
@@ -1478,6 +1610,11 @@ body.music-playing .music-note-three {
 
     .facts {
         grid-template-columns: 1fr
+    }
+
+    .branches-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
     .transport {
